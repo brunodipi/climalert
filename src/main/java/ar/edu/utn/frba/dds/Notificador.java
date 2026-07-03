@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Notificador {
 
   //Hardcodeados los que nos dice en consigna
-  private List<String> correos = new ArrayList<>(List.of("dipietrobr1@gmail.com", "admin@clima.com", "emergencias@clima.com", "meteorologia@clima.com"));
+  private List<String> correos = new ArrayList<>(List.of("admin@clima.com", "emergencias@clima.com", "meteorologia@clima.com"));
 
   @Value("${notificador.mail}")
   private String remitente;
