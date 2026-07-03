@@ -11,12 +11,14 @@ public class WeatherRepository {
   private final List<DatoClimatico> datosClimaticos = new ArrayList<>();
 
   public void save(DatoClimatico datoClimatico) {
-    if (!datosClimaticos.contains(datoClimatico)) {
       datosClimaticos.add(datoClimatico);
-    }
   }
 
   public List<DatoClimatico> findAllDatosClimaticos() {
     return datosClimaticos;
+  }
+
+  public DatoClimatico ultimoDatoClimatico(){
+    return datosClimaticos.getLast();
   }
 }

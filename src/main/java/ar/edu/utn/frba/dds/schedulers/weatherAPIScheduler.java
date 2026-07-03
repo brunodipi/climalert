@@ -13,8 +13,15 @@ public class weatherAPIScheduler {
     this.weatherAPIService = weatherAPIService;
   }
 
-  @Scheduled(fixedRate = 30000) // 300000 ms = 5 minutos
+  @Scheduled(fixedRate = 300000) // 300000 ms = 5 minutos
   public void obtenerDatosClimaticos() {
     weatherAPIService.obtenerDatosClimaticos();
+  }
+
+  //Delay para que no mande vacio
+  @Scheduled(fixedRate = 60000, initialDelay = 300000) //60000 = 1 min
+  public void analizarUltimoDatoClimatico() {
+    System.out.println("Schedule de analizar");
+    weatherAPIService.analizarUltimoDatoClimatico();
   }
 }

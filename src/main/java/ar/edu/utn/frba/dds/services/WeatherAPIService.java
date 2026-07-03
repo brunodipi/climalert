@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.dds.services;
 
 import ar.edu.utn.frba.dds.DatoClimatico;
+import ar.edu.utn.frba.dds.Notificador;
 import ar.edu.utn.frba.dds.dto.weatherApiDTO;
 import ar.edu.utn.frba.dds.repositories.WeatherRepository;
 import java.util.List;
@@ -17,9 +18,11 @@ public class WeatherAPIService {
   private String ciudad;
 
   private WeatherRepository repoClima;
+  private Notificador notificador;
 
-  public WeatherAPIService(WeatherRepository repoClima){
+  public WeatherAPIService(WeatherRepository repoClima, Notificador notificador){
     this.repoClima = repoClima;
+    this.notificador = notificador;
   }
 
   public void obtenerDatosClimaticos() {
@@ -30,14 +33,25 @@ public class WeatherAPIService {
     try {
       weatherApiDTO respuesta = restTemplate.getForObject(url, weatherApiDTO.class);
       if(respuesta != null) {
-        double temperatura = respuesta.getCurrent().getTempC();
-        double viento = respuesta.getCurrent().getWindKph();
+        DatoClimatico dato = new DatoClimatico(
+            respuesta.getCurrent().getTempC(),
+            respuesta.getCurrent().getFeelslikeC(),
+            respuesta.getCurrent().getCondition().getText(),
+            respuesta.getCurrent().getHumidity(),
+            respuesta.getCurrent().getWindKph(),
+            respuesta.getCurrent().getWindDir(),
+            respuesta.getCurrent().getGustKph(),
+            respuesta.getCurrent().getPrecipMm(),
+            respuesta.getCurrent().getPressureMb(),
+            respuesta.getCurrent().getUv(),
+            respuesta.getCurrent().getVisKm(),
+            respuesta.getCurrent().getChanceOfRain()
+        );
 
         System.out.println("--- Reporte del Clima en " + ciudad + " ---");
-        System.out.println("Temperatura: " + temperatura + " °C");
-        System.out.println("Viento: " + viento + " km/h");
+        System.out.println("Temperatura: " + dato.getTemperatura() + "°C");
+        System.out.println("Humedad: " + dato.getHumedad() + "%");
 
-        DatoClimatico dato = new DatoClimatico(temperatura, viento);
         repoClima.save(dato);
       }
     } catch (Exception e) {
@@ -45,8 +59,15 @@ public class WeatherAPIService {
     }
   }
 
-
   public List<DatoClimatico> datosHistoricos() {
     return repoClima.findAllDatosClimaticos();
+  }
+
+  public void analizarUltimoDatoClimatico(){
+    DatoClimatico ultimoDato = repoClima.ultimoDatoClimatico();
+    if(ultimoDato.analizarCritico()){
+      System.out.println("Voy a notificar!!");
+      notificador.notificarAlerta(ultimoDato);
+    }
   }
 }
