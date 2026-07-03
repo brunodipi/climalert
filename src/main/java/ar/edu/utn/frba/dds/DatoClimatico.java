@@ -25,6 +25,6 @@ public class DatoClimatico {
   //Para esta primera iteración solamente consideraremos como “alerta” a una temperatura mayor a
   //35° y una humedad superior a 60%.
   public Boolean analizarCritico(){
-    return this.temperatura>8 || this.humedad>60;
+    return this.temperatura>35 || this.humedad>60;
   }
 }
