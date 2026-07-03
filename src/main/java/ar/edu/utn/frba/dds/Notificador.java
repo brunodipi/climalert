@@ -52,7 +52,6 @@ public class Notificador {
       mensaje.setSubject("ALERTA CLIMÁTICA: Condiciones críticas detectadas");
 
       //Armar el cuerpo usando tu DatoClimatico
-      // Como tu DatoClimatico tiene la anotación @Data de Lombok, podemos usar los getters
       String cuerpoMail = "Hola,\n\n" +
           "El sistema Climalert ha detectado condiciones climáticas críticas. " +
           "A continuación, el reporte detallado:\n\n" +
