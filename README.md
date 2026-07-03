@@ -1,80 +1,16 @@
-# java-base-project
+# Climalert
+Trabajo practico realizado para la asignatura Diseño de Sistemas de Informacion de la UTN FRBA
 
-Esta es una plantilla de proyecto diseñada para:
+## Sobre el proyecto
+El mismo consulta datos climaticos de Buenos Aires mediante una [Api](https://www.weatherapi.com/docs/) cada un lapso de 5 minutos y lo almacena localmente. Además, cada 1 minuto analiza el utlimo estado almacenado y evalua si es de riesgo (una temperatura mayor a 35° o una humedad superior a 60%). En caso de determinar como riesgosa se notifica por mail a interesados. 
 
-* Java 21. :warning: Si bien el proyecto no lo limita explícitamente, el comando `mvn verify` no funcionará con versiones más antiguas de Java.
-* JUnit 5. :warning: La versión 5 de JUnit es la más nueva del framework y presenta algunas diferencias respecto a la versión "clásica" (JUnit 4). Para mayores detalles, ver:
-  * [Apunte de herramientas](https://docs.google.com/document/d/1VYBey56M0UU6C0689hAClAvF9ILE6E7nKIuOqrRJnWQ/edit#heading=h.dnwhvummp994)
-  * [Entrada de Blog (en inglés)](https://www.baeldung.com/junit-5-migration)
-  * [Entrada de Blog (en español)](https://www.paradigmadigital.com/dev/nos-espera-junit-5/)
-* Maven 3.9 o superior (recomendado)
+## Configuracion
+El proyecto cuenta con un archivo [application.properties](https://github.com/brunodipi/climalert/blob/main/src/main/resources/application.properties) donde se deben configurar las siguientes variables:
+- weather.api.key=${WEATHER_API_KEY}
+- notificador.mail=${NOTIFICADOR_MAIL}
+- notificador.password=${NOTIFICADOR_PASSWORD}
 
-## Ejecutar tests
-
-```
-mvn test
-```
-
-## Validar el proyecto de forma exhaustiva
-
-```
-mvn clean verify
-```
-
-Este comando hará lo siguiente:
-
-1. Ejecutará los tests
-2. Validará las convenciones de formato mediante checkstyle
-3. Detectará la presencia de (ciertos) code smells
-4. Validará la cobertura del proyecto
-
-## Entrega del proyecto
-
-Para entregar el proyecto, crear un tag llamado `entrega-final`. Es importante que antes de realizarlo se corra la validación
-explicada en el punto anterior. Se recomienda hacerlo de la siguiente forma:
-
-```
-mvn clean verify && git tag entrega-final && git push origin HEAD --tags
-```
-
-## Configuración del IDE (IntelliJ)
-
-### Usar el SDK de Java 21
-
-1. En **File/Project Structure...**, ir a **Project Settings | Project**
-2. En **Project SDK** seleccionar la versión 21 y en **Project language level** seleccionar el nivel 21 (coincidente con el SDK)
-
-![image](https://user-images.githubusercontent.com/39303639/228126065-221b9851-fb96-4f7f-a8e1-010732dc7ef6.png)
-
-### Usar fin de línea unix
-
-1. En **File/Settings...**, ir a **Editor | Code Style**.
-2. En la lista **Line separator**, seleccionar `Unix and OS X (\n)`.
-
-![image](https://user-images.githubusercontent.com/39303639/228126546-352289fa-8feb-4b39-99db-d8b860915fea.png)
-
-### Tabular con dos espacios
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Tabs and Indents**.
-2. Cambiar **Tab size**, **Indent** y **Continuation indent** a 2, 2 y 4 respectivamente:
-
-![image](https://user-images.githubusercontent.com/39303639/228127009-8c84ea72-969b-4e05-b311-45e3688a4164.png)
-
-### Ordenar los imports
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Imports**.
-2. Cambiar **Class count to use import with '\*'** y **Names count to use static import with '\*'** a un número muy alto (ej: 99).
-3. En **Import Layout**, dejarlo como se muestra a continuación:
-   - `import static all other imports`
-   - `<blank line>`
-   - `import all other imports`
-
-![image](https://user-images.githubusercontent.com/39303639/228126787-36f9ecff-27f2-4b99-bf11-a6bd89f67087.png)
-
-### Instalar y configurar Checkstyle
-
-1. Instalar el plugin https://plugins.jetbrains.com/plugin/1065-checkstyle-idea
-2. En **File/Settings...**, ir a **Tools | Checkstyle**.
-3. Configurarlo activando los Checks de Google y una versión de Checkstyle compatible con el plugin (alinear con la usada por `maven-checkstyle-plugin` del proyecto).
-
-![image](https://github.com/dds-utn/java-base-project/assets/11719816/b1edc122-4675-4f8d-bffc-9e3d3366fac6)
+Para ello se deben definir esas variables de entorno y configurarlas acordemente
+- WEATHER_API_KEY: [crear una cuenta en la API](https://www.weatherapi.com/signup.aspx) y copiar la key que brindan
+- NOTIFICADOR_MAIL: Mail que envia las alertas
+- NOTIFICADOR_PASSWORD: En configuracion de cuenta de Google -> Contraseñas de aplicaciones dar de alta una nueva aplicacion y generar un token del estilo aaaa bbbb cccc dddd
